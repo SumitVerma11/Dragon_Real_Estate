@@ -63,8 +63,11 @@ print(corr_matrix["Median Price of Houses"].sort_values(ascending=False))
 
 from pandas.plotting import scatter_matrix
 attributes = ["Median Price of Houses", "Average no. of rooms", "Residential Land", "Lower Status of Population"]
-print(scatter_matrix(housing_data[attributes], figsize=(12,8)))
+scatter_matrix(housing_data[attributes], figsize=(12,8))
+#plt.show()
+housing_data.plot(kind="scatter", x="Average no. of rooms", y="Median Price of Houses", alpha=0.8)
+plt.show()
 
-
+##Trying out attribute combinations
 
 
