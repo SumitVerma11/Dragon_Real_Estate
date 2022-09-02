@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 desired_width=320
 pd.set_option('display.width', desired_width)
 np.set_printoptions(linewidth=desired_width)
-pd.set_option('display.max_columns',13)
+pd.set_option('display.max_columns',15)
 
 
 housing_data = pd.read_csv("housing_data.csv")
@@ -58,16 +58,21 @@ print("\n")
 
 
 ##Looking for Correlations
-corr_matrix = housing_data.corr()
-print(corr_matrix["Median Price of Houses"].sort_values(ascending=False))
+#corr_matrix = housing_data.corr()
+#print(corr_matrix["Median Price of Houses"].sort_values(ascending=False))
 
 from pandas.plotting import scatter_matrix
 attributes = ["Median Price of Houses", "Average no. of rooms", "Residential Land", "Lower Status of Population"]
 scatter_matrix(housing_data[attributes], figsize=(12,8))
 #plt.show()
 housing_data.plot(kind="scatter", x="Average no. of rooms", y="Median Price of Houses", alpha=0.8)
-plt.show()
+#plt.show()
 
 ##Trying out attribute combinations
+housing_data["Tax Per Room"] = housing_data["Tax Rate"]/housing_data["Average no. of rooms"]
+print(housing_data["Tax Per Room"])
+print("\n")
 
-
+##Looking for Correlations
+corr_matrix = housing_data.corr()
+print(corr_matrix["Median Price of Houses"].sort_values(ascending=False))
