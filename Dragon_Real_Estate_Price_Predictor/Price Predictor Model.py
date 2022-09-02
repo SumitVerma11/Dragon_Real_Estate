@@ -10,8 +10,8 @@ pd.set_option('display.max_columns',15)
 
 
 housing_data = pd.read_csv("housing_data.csv")
-print(housing_data.head())
-print("\n")
+#print(housing_data.head())
+#print("\n")
 
 #print(housing_data.info)
 #print(housing_data.columns)
@@ -56,6 +56,8 @@ print("\n")
 print(strat_test_set['River Neighbouring'].value_counts())
 print("\n")
 
+# Update our housing_data dataset with the trained dataset i.e. strat_train_set
+housing_data = strat_train_set.copy()
 
 ##Looking for Correlations
 #corr_matrix = housing_data.corr()
@@ -70,9 +72,40 @@ housing_data.plot(kind="scatter", x="Average no. of rooms", y="Median Price of H
 
 ##Trying out attribute combinations
 housing_data["Tax Per Room"] = housing_data["Tax Rate"]/housing_data["Average no. of rooms"]
-print(housing_data["Tax Per Room"])
-print("\n")
+#print(housing_data["Tax Per Room"])
+#print("\n")
 
 ##Looking for Correlations
 corr_matrix = housing_data.corr()
 print(corr_matrix["Median Price of Houses"].sort_values(ascending=False))
+print("\n")
+
+## Missing Attributes
+# To take of missing attributes, you have 3 options
+#   1. Get rid of missing data points
+#   2. Get rid of entire attribute/column
+#   3. Set the empty column's values to some arbitrary values such as - 0/Mean/Median/Mode
+
+a = housing_data.dropna(subset=["Average no. of rooms"]) # Option 1
+print(a.shape)
+
+print(housing_data.drop("Average no. of rooms", axis=1).shape) # Option 2
+
+median = housing_data["Average no. of rooms"].median()
+housing_data["Average no. of rooms"].fillna(median) # option 3
+print(housing_data.shape)
+print(("\n"))
+
+# Another method perform option 3 using sklear.impute to fill missing values
+from sklearn.impute import SimpleImputer
+imputer = SimpleImputer(strategy = "median")
+imputer.fit (housing_data)
+print(housing_data.shape)
+print(("\n"))
+print(imputer.statistics_) # will give median value for all the columns
+X = imputer.transform(housing_data)
+print(("\n"))
+housing_data_transformed = pd.DataFrame(X, columns=housing_data.columns)
+print(housing_data_transformed.describe())
+print(("\n"))
+
