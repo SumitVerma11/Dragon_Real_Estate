@@ -67,3 +67,4 @@ print(scatter_matrix(housing_data[attributes], figsize=(12,8)))
 
 
 
+
