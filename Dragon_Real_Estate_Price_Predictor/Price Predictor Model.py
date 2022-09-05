@@ -109,3 +109,37 @@ housing_data_transformed = pd.DataFrame(X, columns=housing_data.columns)
 print(housing_data_transformed.describe())
 print(("\n"))
 
+
+## Scikit-learn Design
+#Primarily 3 types of objects in Scikit Learn
+#   1. Estimators - Estimates some parameters based on a dataset eg- Imputer.
+#                   It has a fit method & transform method. Fits the dataset and calculates internal parameters.
+#   2. Transformers - Transform method takes input and returs output based on the learnings from fit().
+#                     It also has a convenience function called fit_transform() which fits & then transforms.
+#   3. Predictors - fit() & predict() are 2 common functions. It also gives score() function which will evaluate the predictions.
+#                   LinearRegression model is an example of predictor.
+
+
+## Features Scaling
+# 2 Types of Features Scaling methods primarily
+#   1. Normalization (Min-Max Scaling) = (Value-min)/(max-min)
+#   Sklearn provides a class called MinMaxScaler for this
+#   2. Standardization = (Value-mean)/std
+#   Sklearn provides a class called StandardScaler for this
+
+
+
+## Creating a Pipeline
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
+my_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy="median")),
+    #     ........ add as many as you want in your pipeline
+    ('std_scaler', StandardScaler())
+])
+
+housing_data_transformed_pipeline = my_pipeline.fit_transform(housing_data_transformed)
+print(housing_data_transformed_pipeline)
+
+
