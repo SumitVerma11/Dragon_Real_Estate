@@ -212,6 +212,22 @@ print("Standard Deviation:", rmse_scores2.std())
 # Random Forest Regressor's scores are even better than Decesion Tree Regressor's model
 
 
+## Saving the model
+from joblib import dump, load
+dump(model2, 'Dragon.joblib')
+
+
+## Testing the model
+X_test = strat_test_set.drop("Median Price of Houses", axis=1)
+Y_test = strat_test_set["Median Price of Houses"].copy()
+X_test_prepared = my_pipeline.transform(X_test)
+final_predictions = model2.predict(X_test_prepared)
+final_mse = mean_squared_error(Y_test, final_predictions)
+final_rmse = np.sqrt(final_mse)
+print("Final Predictions:", final_predictions , "\n\n", final_rmse)
+
+
+
 
 
 
