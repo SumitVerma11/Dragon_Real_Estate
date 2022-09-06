@@ -80,6 +80,9 @@ corr_matrix = housing_data.corr()
 print(corr_matrix["Median Price of Houses"].sort_values(ascending=False))
 print("\n")
 
+housing_data = strat_train_set.drop("Median Price of Houses", axis=1)
+housing_data_labels = strat_train_set["Median Price of Houses"].copy()
+
 ## Missing Attributes
 # To take of missing attributes, you have 3 options
 #   1. Get rid of missing data points
@@ -140,6 +143,75 @@ my_pipeline = Pipeline([
 ])
 
 housing_data_transformed_pipeline = my_pipeline.fit_transform(housing_data_transformed)
-print(housing_data_transformed_pipeline)
+print(housing_data_transformed_pipeline.shape)
+
+## Selecting a desired model for Dragon Real Estate:-
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(housing_data_transformed_pipeline, housing_data_labels)
+
+some_data = housing_data.iloc[:5]
+some_labels = housing_data_labels.iloc[:5]
+
+prepared_data = my_pipeline.transform(some_data)
+print(model.predict(prepared_data))
+print(list(some_labels))
+
+
+## Evaluating the model
+from sklearn.metrics import mean_squared_error
+housing_data_predictions = model.predict(housing_data_transformed_pipeline)
+lin_mse = mean_squared_error(housing_data_labels, housing_data_predictions)
+lin_rmse = np.sqrt(lin_mse)
+print(lin_mse, " ", lin_rmse)
+# Value of Mean square error is 23, which is very high, hence discarding this error & trying DecisionTreeRegressor above by commenting LinearRegression model
+
+
+## Selecting Decesion Tree Regressor model
+from sklearn.tree import DecisionTreeRegressor
+model1 = DecisionTreeRegressor()
+model1.fit(housing_data_transformed_pipeline, housing_data_labels)
+
+housing_data_predictions = model1.predict(housing_data_transformed_pipeline)
+mse = mean_squared_error(housing_data_labels, housing_data_predictions)
+rmse = np.sqrt(mse)
+print(mse, " ", rmse)
+# Hence Mean Square Error is coming as 0, which means that it has overfitted the model, which is also not good
+
+
+## Using better evaluation technique - Cross Validation
+from sklearn.model_selection import cross_val_score
+
+# For Linear Regression Model:-
+scores = cross_val_score(model, housing_data_transformed_pipeline, housing_data_labels, scoring="neg_mean_squared_error", cv=10)
+rmse_scores = np.sqrt(-scores)
+#print("Scores:" , rmse_scores)
+print("Mean:", rmse_scores.mean())
+print("Standard Deviation:", rmse_scores.std())
+print("\n")
+
+# For Decision Tree Regressor
+scores1 = cross_val_score(model1, housing_data_transformed_pipeline, housing_data_labels, scoring="neg_mean_squared_error", cv=10)
+rmse_scores1 = np.sqrt(-scores1)
+#print("Scores:" , rmse_scores1)
+print("Mean:", rmse_scores1.mean())
+print("Standard Deviation:", rmse_scores1.std())
+print("\n")
+# Decision Tree Regressor model's error values(score) is slightly better/lesser than Linear Regression model's
+# We now want to check whether another model will give better result or not, hence trying Random Forest Regressor now
+
+# For Random Forest Regressor
+from sklearn.ensemble import RandomForestRegressor
+model2 = RandomForestRegressor()
+model2.fit(housing_data_transformed_pipeline, housing_data_labels)
+scores2 = cross_val_score(model2, housing_data_transformed_pipeline, housing_data_labels, scoring="neg_mean_squared_error", cv=10)
+rmse_scores2 = np.sqrt(-scores2)
+#print("Scores:" , rmse_scores2)
+print("Mean:", rmse_scores2.mean())
+print("Standard Deviation:", rmse_scores2.std())
+# Random Forest Regressor's scores are even better than Decesion Tree Regressor's model
+
+
+
 
 
