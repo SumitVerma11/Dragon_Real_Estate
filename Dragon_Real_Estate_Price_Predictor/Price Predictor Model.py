@@ -227,6 +227,15 @@ final_rmse = np.sqrt(final_mse)
 print("Final Predictions:", final_predictions , "\n\n", final_rmse)
 
 
+## Pickling the model file for Deployment
+import pickle
+
+pickle.dump(final_predictions,open('housing_price_prediction_model.pkl','wb'))
+pickled_model = pickle.load(open('housing_price_prediction_model.pkl','rb'))
+#print(pickled_model.predict(X_test_prepared))
+
+
+
 
 
 
