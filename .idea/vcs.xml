@@ -4,5 +4,6 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Dragon-Real-Estate-Git" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Dragon_Real_Estate_Price_Predictor/Dragon-Real-Estate-Git" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Dragon_Real_Estate_Price_Predictor/Dragon_Real_Estate" vcs="Git" />
   </component>
 </project>
