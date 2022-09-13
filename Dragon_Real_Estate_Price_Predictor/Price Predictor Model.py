@@ -145,6 +145,10 @@ my_pipeline = Pipeline([
 housing_data_transformed_pipeline = my_pipeline.fit_transform(housing_data_transformed)
 print(housing_data_transformed_pipeline.shape)
 
+# Pickling the scaler output
+import pickle
+pickle.dump(housing_data_transformed_pipeline,open('scaling.pkl','wb'))
+
 ## Selecting a desired model for Dragon Real Estate:-
 from sklearn.linear_model import LinearRegression
 model = LinearRegression()
